@@ -6,7 +6,7 @@ var LevelWriteStream = require('level-write-stream')
   , xtend = require('xtend')
   , mime = require('mime')
   , once = require('once')
-  , knox = require('knox')
+  , AWS = require('aws-sdk')
   , url = require('url')
   , fs = require('fs')
 
@@ -25,8 +25,10 @@ function s3syncer(db, options) {
   options.retries = options.retries || 7
   options.acl = options.acl || 'public-read'
   options.force = !!options.force
+  options.accessKeyId = options.accessKeyId || options.key
+  options.secretAccessKey = options.secretAccessKey || options.secret
 
-  var client = knox.createClient(options)
+  var client = new AWS.S3(options)
     , queue = createQueue(options.concurrency)
     , region = options.region === 'us-standard' ? false : options.region
     , secure = options.secure || !('secure' in options)
@@ -89,14 +91,13 @@ function s3syncer(db, options) {
     })
 
     function checkForUpload(next) {
-      client.headFile(relative, function(err, res) {
-        if (err) return next(err)
+      client.headObject({Bucket: options.bucket, Key: relative}, function(err, res) {
+        if (err && err.statusCode !== 404) return next(err)
+        if (err && err.statusCode === 404) return uploadFile(details, next)
         if (
-          options.force ||
-          res.statusCode === 404 || (
-          res.headers['x-amz-meta-syncfilehash'] !== details.md5
+          options.force || (
+          res.Metadata['syncfilehash'] !== details.md5
         )) return uploadFile(details, next)
-        if (res.statusCode >= 300) return next(new Error('Bad status code: ' + res.statusCode))
         return next(null, details)
       })
     }
@@ -117,16 +118,22 @@ function s3syncer(db, options) {
     off.on('fail', function() {
       next(lasterr || new Error('unknown error'))
     }).on('ready', function() {
-      var headers = xtend({
-          'x-amz-acl': options.acl
-        , 'x-amz-meta-syncfilehash': details.md5
-        , 'Content-Type': mime.lookup(absolute)
+      var params = xtend({
+        Bucket: options.bucket,
+        Key: relative,
+        ContentType: mime.lookup(absolute),
+        ACL: options.acl,
+        Metadata: {
+          syncfilehash: details.md5
+        },
+        Body: fs.createReadStream(absolute)
       }, options.headers)
 
-      client.putFile(absolute, relative, headers, function(err, res) {
-        if (!err) {
-          if (res.statusCode < 300) return next(null, details)
-          err = new Error('Bad status code: ' + res.statusCode)
+      client.putObject(params, function(err, res) {
+        if (err) {
+          err = new Error('Bad status code: ' + err.statusCode)
+        } else {
+          return next(null, details)
         }
 
         lasterr = err
@@ -139,9 +146,12 @@ function s3syncer(db, options) {
   function getCache(callback) {
     callback = once(callback)
 
-    client.getFile(options.cacheDest, function(err, res) {
-      if (err) return callback(err)
-      if (res.statusCode === 404) return callback(null)
+    client.getObject({
+      Bucket: options.bucket,
+      Key: options.cacheDest
+    }, function(err, res) {
+      if (err && err.statusCode !== 404) return callback(err)
+      if (err && err.statusCode === 404) return callback(null)
 
       es.pipeline(
           res
@@ -161,7 +171,11 @@ function s3syncer(db, options) {
       .pipe(fs.createWriteStream(options.cacheSrc))
       .once('error', callback)
       .once('close', function() {
-        client.putFile(options.cacheSrc, options.cacheDest, function(err) {
+        client.putObject({
+          Bucket: options.bucket,
+          Key: options.cacheDest,
+          Body: fs.createReadStream(options.cacheSrc)
+        }, function(err) {
           if (err) return callback(err)
           fs.unlink(options.cacheSrc, callback)
         })
