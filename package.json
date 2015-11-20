@@ -1,6 +1,6 @@
 {
-  "name": "s3-sync",
-  "version": "1.0.1",
+  "name": "s3-sync-aws",
+  "version": "1.1.0",
   "description": "A streaming upload tool for Amazon S3",
   "main": "index.js",
   "dependencies": {
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hughsk/s3-sync.git"
+    "url": "git://github.com/andreialecu/s3-sync-aws.git"
   },
   "keywords": [
     "stream",

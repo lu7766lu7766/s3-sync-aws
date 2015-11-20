@@ -1,4 +1,4 @@
-# s3-sync #
+# s3-sync-aws #
 
 A streaming upload tool for Amazon S3, taking input from a
 [`readdirp`](http://npmjs.org/package/readdirp) stream, and outputting the
@@ -15,12 +15,12 @@ additional features.
 ## Installation ##
 
 ``` bash
-npm install s3-sync
+npm install s3-sync-aws
 ```
 
 ## Usage ##
 
-### `require('s3-sync').createStream([db, ]options)` ###
+### `require('s3-sync-aws').createStream([db, ]options)` ###
 
 Creates an upload stream. Passes its options to [aws-sdk](http://ghub.io/aws-sdk),
 so at a minimum you'll need:
@@ -30,7 +30,7 @@ so at a minimum you'll need:
 * `bucket`: The bucket to upload to.
 * `region`: The region the bucket is in.
 
-The following are also specific to s3-sync:
+The following are also specific to s3-sync-aws:
 
 * `concurrency`: The maximum amount of files to upload concurrently.
 * `retries`: The maximum number of times to retry uploading a file before failing. By default the value is 7.
@@ -39,7 +39,7 @@ The following are also specific to s3-sync:
   path. This doesn't work very nicely with temporary files, so you can pass
   this function in to map the file object to a string key for the hash.
 * `acl`: Use a custom [ACL header](http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html). Defaults to `public-read`.
-* `force`: Force s3-sync to overwrite any existing files. Not generally required, since we store a hash and compare it to detect updated files.
+* `force`: Force s3-sync-aws to overwrite any existing files. Not generally required, since we store a hash and compare it to detect updated files.
 
 You can also store your local cache in S3, provided you pass the following
 options, and use `getCache` and `putCache` (see below) before/after uploading:
@@ -96,7 +96,7 @@ an S3 bucket:
 
 ``` javascript
 var level = require('level')
-  , s3sync = require('s3-sync')
+  , s3sync = require('s3-sync-aws')
   , readdirp = require('readdirp')
 
 // To cache the S3 HEAD results and speed up the
@@ -124,4 +124,4 @@ files.pipe(uploader)
 ```
 
 You can find another example which includes remote cache storage at
-[example.js](https://github.com/hughsk/s3-sync/blob/master/example.js).
+[example.js](https://github.com/andreialecu/s3-sync-aws/blob/master/example.js).
