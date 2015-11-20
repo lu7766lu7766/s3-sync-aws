@@ -22,23 +22,24 @@ npm install s3-sync
 
 ### `require('s3-sync').createStream([db, ]options)` ###
 
-Creates an upload stream. Passes its options to [knox](http://ghub.io/knox),
+Creates an upload stream. Passes its options to [aws-sdk](http://ghub.io/aws-sdk),
 so at a minimum you'll need:
 
-* `key`: Your AWS access key.
-* `secret`: Your AWS secret.
+* `key` or `accessKeyId`: Your AWS access key.
+* `secret` or `secretAccessKey`: Your AWS secret.
 * `bucket`: The bucket to upload to.
+* `region`: The region the bucket is in.
 
 The following are also specific to s3-sync:
 
 * `concurrency`: The maximum amount of files to upload concurrently.
 * `retries`: The maximum number of times to retry uploading a file before failing. By default the value is 7.
-* `headers`: Additional headers to include on each file.
+* `headers`: Additional parameters for each file, see [S3 docs](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property).
 * `hashKey`: By default, file hashes are stored based on the file's absolute
   path. This doesn't work very nicely with temporary files, so you can pass
   this function in to map the file object to a string key for the hash.
 * `acl`: Use a custom [ACL header](http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html). Defaults to `public-read`.
-* `force`: Force s3-sync to overwrite any existing files.
+* `force`: Force s3-sync to overwrite any existing files. Not generally required, since we store a hash and compare it to detect updated files.
 
 You can also store your local cache in S3, provided you pass the following
 options, and use `getCache` and `putCache` (see below) before/after uploading:
@@ -107,7 +108,7 @@ var files = readdirp({
   , directoryFilter: ['!.git', '!cache']
 })
 
-// Takes the same options arguments as `knox`,
+// Takes the same options arguments as `aws-sdk`,
 // plus some additional options listed above
 var uploader = s3sync(db, {
     key: process.env.AWS_ACCESS_KEY
