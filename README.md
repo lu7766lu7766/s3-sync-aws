@@ -12,6 +12,8 @@ You can use this to sync complete directory trees with S3 when deploying static
 websites. It's a work in progress, so expect occasional API changes and
 additional features.
 
+##### The difference between this fork and the main one at [s3-sync](https://github.com/hughsk/s3-sync) is that it uses the official `aws-sdk` library instead of `knox`, and thus can work with v4 signatures (required for certain AWS regions such as Frankfurt).
+
 ## Installation ##
 
 ``` bash
