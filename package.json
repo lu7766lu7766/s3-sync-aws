@@ -1,6 +1,6 @@
 {
   "name": "jac-s3-sync-aws",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A streaming upload tool for Amazon S3",
   "main": "index.js",
   "dependencies": {

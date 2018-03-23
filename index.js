@@ -29,6 +29,8 @@ function s3syncer(db, options) {
   options.secretAccessKey = options.secretAccessKey || options.secret
   options.dest = options.dest || ''
 
+  var dest = options.dest ? (options.dest + '/').replace('//', '/') : ''
+
   var client = new AWS.S3(options)
     , queue = createQueue(options.concurrency)
     , region = options.region === 'us-standard' ? false : options.region
@@ -58,7 +60,7 @@ function s3syncer(db, options) {
       , relative = prefix + (details.path.charAt(0) === '/'
         ? details.path.slice(1)
         : details.path)
-    var dest = options.dest ? (options.dest + '/').replace('//', '/') : ''
+    
 
     relative = relative.replace(/\\/g, '/')
 
@@ -114,7 +116,7 @@ function s3syncer(db, options) {
         initialDelay: 1000
       })
 
-    relative = relative.replace(/\\/g, '/')
+    relative = dest + relative.replace(/\\/g, '/')
     details.fresh = true
 
     off.failAfter(options.retries)
