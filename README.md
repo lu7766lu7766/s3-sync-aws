@@ -1,18 +1,8 @@
-# s3-sync-aws #
+# jac-s3-sync-aws #
 
-A streaming upload tool for Amazon S3, taking input from a
-[`readdirp`](http://npmjs.org/package/readdirp) stream, and outputting the
-resulting files.
+Fork from s3-sync-aws(https://github.com/andreialecu/s3-sync-aws)
 
-s3-sync is also optionally backed by a [level](http://github.com/level/level)
-database to use as a local cache for file uploads. This way, you can minimize
-the frequency you have to hit S3 and speed up the whole process considerably.
-
-You can use this to sync complete directory trees with S3 when deploying static
-websites. It's a work in progress, so expect occasional API changes and
-additional features.
-
-##### The difference between this fork and the main one at [s3-sync](https://github.com/hughsk/s3-sync) is that this one uses the official `aws-sdk` library instead of `knox` (see [this bug](https://github.com/Automattic/knox/issues/254#issuecomment-209521831)), and thus can work with v4 signatures (required for certain AWS regions such as Frankfurt).
+##### The difference between this fork is i add a option `dest`.
 
 ## Installation ##
 
@@ -31,6 +21,7 @@ so at a minimum you'll need:
 * `secret` or `secretAccessKey`: Your AWS secret.
 * `bucket`: The bucket to upload to.
 * `region`: The region the bucket is in.
+* `dest`: Upload folder.
 
 The following are also specific to s3-sync-aws:
 

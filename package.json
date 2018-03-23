@@ -1,6 +1,6 @@
 {
   "name": "jac-s3-sync-aws",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A streaming upload tool for Amazon S3",
   "main": "index.js",
   "dependencies": {
@@ -17,6 +17,10 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lu7766lu7766/s3-sync-aws"
   },
   "author": "Jac Wang <lu7766lu7766@gmail.com>",
   "license": "MIT",
