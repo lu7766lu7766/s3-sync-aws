@@ -1,6 +1,6 @@
 {
-  "name": "s3-sync-aws",
-  "version": "1.1.1",
+  "name": "jac-s3-sync-aws",
+  "version": "1.2.1",
   "description": "A streaming upload tool for Amazon S3",
   "main": "index.js",
   "dependencies": {
@@ -14,31 +14,11 @@
     "queue-async": "~1.0.4",
     "xtend": "~4.0.0"
   },
-  "peerDependencies": {
-    "level": "~1.4.0"
-  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/andreialecu/s3-sync-aws.git"
-  },
-  "keywords": [
-    "stream",
-    "s3",
-    "upload",
-    "sync",
-    "directory"
-  ],
-  "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughskennedy.com/)",
-  "contributors": [
-    {
-      "name": "Josenivaldo Benito Jr.",
-      "email": "jrbenito@benito.com.br"
-    }
-  ],
+  "author": "Jac Wang <lu7766lu7766@gmail.com>",
   "license": "MIT",
   "readmeFilename": "README.md"
 }

@@ -27,6 +27,7 @@ function s3syncer(db, options) {
   options.force = !!options.force
   options.accessKeyId = options.accessKeyId || options.key
   options.secretAccessKey = options.secretAccessKey || options.secret
+  options.dest = options.dest || ''
 
   var client = new AWS.S3(options)
     , queue = createQueue(options.concurrency)
@@ -57,6 +58,7 @@ function s3syncer(db, options) {
       , relative = prefix + (details.path.charAt(0) === '/'
         ? details.path.slice(1)
         : details.path)
+    var dest = options.dest ? (options.dest + '/').replace('//', '/') : ''
 
     relative = relative.replace(/\\/g, '/')
 
@@ -64,8 +66,9 @@ function s3syncer(db, options) {
           protocol + '://'
         + subdomain
         + '.amazonaws.com/'
-        + options.bucket
-        + '/' + relative
+        + options.bucket + '/'
+        + dest 
+        + relative
 
     hashFile(absolute, destination, function(err, md5) {
       if (err) return next(err)
