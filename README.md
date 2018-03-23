@@ -7,12 +7,12 @@ Fork from s3-sync-aws(https://github.com/andreialecu/s3-sync-aws)
 ## Installation ##
 
 ``` bash
-npm install s3-sync-aws
+npm install jac-s3-sync-aws
 ```
 
 ## Usage ##
 
-### `require('s3-sync-aws').createStream([db, ]options)` ###
+### `require('jac-s3-sync-aws').createStream([db, ]options)` ###
 
 Creates an upload stream. Passes its options to [aws-sdk](http://ghub.io/aws-sdk),
 so at a minimum you'll need:
@@ -21,10 +21,10 @@ so at a minimum you'll need:
 * `secret` or `secretAccessKey`: Your AWS secret.
 * `bucket`: The bucket to upload to.
 * `region`: The region the bucket is in.
+
+The following are also specific to jac-s3-sync-aws:
+
 * `dest`: Upload folder.
-
-The following are also specific to s3-sync-aws:
-
 * `concurrency`: The maximum amount of files to upload concurrently.
 * `retries`: The maximum number of times to retry uploading a file before failing. By default the value is 7.
 * `headers`: Additional parameters for each file, see [S3 docs](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property).
@@ -89,7 +89,7 @@ an S3 bucket:
 
 ``` javascript
 var level = require('level')
-  , s3sync = require('s3-sync-aws')
+  , s3sync = require('jac-s3-sync-aws')
   , readdirp = require('readdirp')
 
 // To cache the S3 HEAD results and speed up the
@@ -108,6 +108,7 @@ var uploader = s3sync(db, {
   , secret: process.env.AWS_SECRET_KEY
   , bucket: 'sync-testing'
   , concurrency: 16
+  , dest: 'target_folder'
   , prefix : 'mysubfolder/' //optional prefix to files on S3
 }).on('data', function(file) {
   console.log(file.fullPath + ' -> ' + file.url)
@@ -117,4 +118,4 @@ files.pipe(uploader)
 ```
 
 You can find another example which includes remote cache storage at
-[example.js](https://github.com/andreialecu/s3-sync-aws/blob/master/example.js).
+[example.js](https://github.com/andreialecu/jac-s3-sync-aws/blob/master/example.js).
