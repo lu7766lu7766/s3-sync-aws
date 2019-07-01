@@ -1,28 +1,31 @@
 {
-  "name": "jac-s3-sync-aws",
-  "version": "1.2.4",
-  "description": "A streaming upload tool for Amazon S3",
-  "main": "index.js",
-  "dependencies": {
-    "aws-sdk": "^2.2.18",
-    "backoff": "~2.3.0",
-    "crypto": "0.0.3",
-    "event-stream": "3.0.16",
-    "level-write-stream": "^1.0.0",
-    "mime": "~1.2.9",
-    "once": "~1.1.1",
-    "queue-async": "~1.0.4",
-    "xtend": "~4.0.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lu7766lu7766/s3-sync-aws"
-  },
-  "author": "Jac Wang <lu7766lu7766@gmail.com>",
-  "license": "MIT",
-  "readmeFilename": "README.md"
+	"name": "jac-s3-sync-aws",
+	"version": "2.0.0",
+	"description": "A streaming upload tool for Amazon S3",
+	"main": "index.js",
+	"dependencies": {
+		"aws-sdk": "^2.2.18",
+		"backoff": "~2.3.0",
+		"crypto": "0.0.3",
+		"event-stream": "^4.0.1",
+		"level": "^5.0.1",
+		"level-write-stream": "^1.0.0",
+		"mime": "~1.2.9",
+		"moment": "^2.24.0",
+		"once": "~1.1.1",
+		"queue-async": "~1.0.4",
+		"readdirp": "^3.0.2",
+		"xtend": "~4.0.0"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lu7766lu7766/s3-sync-aws"
+	},
+	"author": "Jac Wang <lu7766lu7766@gmail.com>",
+	"license": "MIT",
+	"readmeFilename": "README.md"
 }
