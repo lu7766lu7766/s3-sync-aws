@@ -24,7 +24,7 @@ module.exports = async (dir, options) => {
 		bucket: options.bucket,
 		concurrency: 100
 	}
-	options.dir && (conf.dest = options.dir)
+	options.dest && (conf.dest = options.dest)
 
 	var uploader = s3sync(db, conf).on('data', function(file) {
 		if (file.fresh) {
